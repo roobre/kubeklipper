@@ -1,0 +1,74 @@
+klipper:
+  klipper:
+    persistence:
+      # Set this to a volume spec, without including `name`, to specify a virtual_sdcard for Klipper.
+      # https://github.com/Klipper3d/klipper/blob/master/docs/Config_Reference.md#virtual_sdcard
+      # If non-empty, a [virtual_sdcard] is appended to config automatically.
+      # You will need to set this for GCode uploads to work, although it can be an emptyDir if you
+      # do not want to persist GCode files.
+      virtualSDCard: {}
+
+    config: |
+      # Paste your config file here, in text/ini format.
+      # See examples on https://github.com/Klipper3d/klipper/tree/master/config
+
+  moonraker:
+    # Moonraker config: https://github.com/Arksine/moonraker/blob/master/docs/configuration.md
+    # Use YAML format for the config here, which allows merging with the default values (see charts/klipper/values.yaml)
+    # Config is converted from yaml to text/ini automatically by the chart.
+    config:
+      #octoprint_compat: {}
+      #history: {}
+      #authorization:
+      #  cors_domains:
+      #    - something.something
+
+  # You need to configure an ingress for moonraker so the Mainsail UI, which runs purely as a web
+  # app, can reach it.
+  # Make sure to secure moonraker appropriately if you expose this ingress to the internet, as anyone
+  # with access to this API can very easily set your home on fire.
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: moonraker.example
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+mainsail:
+  enabled: true
+
+  config:
+    # Uncomment and configure the following lines if you want the Mainsail UI to be preconfigured
+    # to point to your moonraker instance. If you don't, you will need to configure Mainsail through
+    # its web ui.
+    #instancesDB: json
+    #instances:
+      # Instance pointing to the moonraker ingress
+      #- hostname: moonraker.example
+        #port: 80
+
+  # You likely want an ingress for mainsail itself.
+  ingress:
+    enabled: false
+    className: ""
+    hosts:
+      - host: mainsail.example
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+fluidd:
+  enabled: false
+
+ustreamer:
+  enabled: false

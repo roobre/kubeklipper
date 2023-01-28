@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "klipper.fullname" . }}
+  labels:
+    {{- include "klipper.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "klipper.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/klipper-config: {{ include (print $.Template.BasePath "/configmap-klipper.yaml") . | sha256sum }}
+        checksum/moonraker-config: {{ include (print $.Template.BasePath "/configmap-moonraker.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "klipper.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      shareProcessNamespace: true
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: klipper
+          args:
+            {{- if .Values.klipper.verbose }}
+            - "-v"
+            {{- end }}
+            - "-a"
+            - "/run/klipper/klipper.sock"
+            - "-I"
+            - "/run/klipper/klipper.tty"
+            - "/config/printer.cfg"
+          securityContext:
+            {{- toYaml .Values.klipper.securityContext | nindent 12 }}
+          image: "{{ .Values.klipper.image.repository }}:{{ .Values.klipper.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.klipper.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.klipper.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /run/klipper
+              name: klipper-sock
+            - mountPath: /config/printer.cfg
+              name: klipper-config
+              subPath: printer.cfg
+            # Moonraker places gcode uploads in /data/gcodes, expecting klipper to use the same path
+            # as its virtual_sdcard.
+            - mountPath: /data/gcodes
+              name: moonraker-data
+              subPath: gcodes
+        - name: moonraker
+          securityContext:
+            {{- toYaml .Values.moonraker.securityContext | nindent 12 }}
+          image: "{{ .Values.moonraker.image.repository }}:{{ .Values.moonraker.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.moonraker.image.pullPolicy }}
+          args:
+            - "-d"
+            - "/data"
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: http
+          resources:
+            {{- toYaml .Values.moonraker.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.service.port }}
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.service.port }}
+          volumeMounts:
+            - mountPath: /data
+              name: moonraker-data
+            - mountPath: /run/klipper
+              name: klipper-sock
+            - mountPath: /data/config/moonraker.conf
+              name: moonraker-config
+              subPath: moonraker.conf
+            - mountPath: /tmp
+              name: moonraker-tmp
+      volumes:
+        # Shared dir for klipper unix socket.
+        - name: klipper-sock
+          emptyDir:
+            sizeLimit: 1Mi
+        - name: klipper-config
+          configMap:
+            name: {{ include "klipper.fullname" . }}-klipper
+        - name: moonraker-config
+          configMap:
+            name: {{ include "klipper.fullname" . }}-moonraker
+        # Temporary folder, file uploads are stored here before being moved to /data
+        - name: moonraker-tmp
+          emptyDir:
+            sizeLimit: 500Mi
+        {{- with .Values.moonraker.persistence.data }}
+        - name: moonraker-data
+          {{- . | toYaml | nindent 10 }}
+        {{- end }}
+        {{- with .Values.klipper.persistence.virtualSDCard }}
+        - name: klipper-virtual-sdcard
+          {{- . | toYaml | nindent 10 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

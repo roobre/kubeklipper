@@ -1,0 +1,15 @@
+dependencies:
+- name: klipper
+  repository: ""
+  version: 0.1.0
+- name: mainsail
+  repository: ""
+  version: 0.1.0
+- name: fluidd
+  repository: ""
+  version: 0.1.0
+- name: ustreamer
+  repository: ""
+  version: 0.1.0
+digest: sha256:c81f9d53f7e7031da12ffb64dab547437244e752ab7747a6ebea81118a7b7673
+generated: "2023-01-17T11:32:48.177775143+01:00"
