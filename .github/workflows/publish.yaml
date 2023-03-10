@@ -22,9 +22,9 @@ jobs:
             --password-stdin
       - name: Helm package
         run: |
-          helm package . -u --version "$GITHUB_REF_NAME"
+          helm package . -u --version "${GITHUB_REF_NAME#v}"
       - name: Helm push
         run: |
           helm push \
-          "${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}-$GITHUB_REF_NAME.tgz" \
+          "${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}-${GITHUB_REF_NAME#v}.tgz" \
           "oci://ghcr.io/$GITHUB_REPOSITORY_OWNER"
