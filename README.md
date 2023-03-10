@@ -11,6 +11,23 @@ It includes:
 
 Mostly autoconfigured to run out of the box*.
 
+## Using this chart
+
+The kubeklipper chart is distributed as an [OCI image](https://helm.sh/docs/topics/registries/). You can use it as a dependency if you are using Helm v3.8.0 or newer. To do so, simply add an entry to your `dependencies` array like the following:
+
+```yaml
+dependencies:
+  - name: kubeklipper
+    version: v0.0.2
+    repository: oci://ghcr.io/roobre
+```
+
+You can also install the chart directly:
+
+```shell
+helm install kubeklipper oci://ghcr.io/roobre/kubeklipper --version v0.0.2
+```
+
 ## Architecture
 
 Klipper and Moonraker run together, as different containers, in the same pod. This allows them to communicate over a unix socket. You should place node selector, affinities, or resources accordingly so the node running this pod can communicate with your 3D printer via USB.
