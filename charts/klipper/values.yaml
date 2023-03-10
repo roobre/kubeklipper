@@ -21,7 +21,7 @@ klipper:
     repository: mkuf/klipper
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "b2178f4"
 
   securityContext:
     readOnlyRootFilesystem: true
