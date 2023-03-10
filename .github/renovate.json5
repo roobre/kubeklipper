@@ -5,5 +5,11 @@
     ":semanticCommitsDisabled" // Chore this, chore that, chore the heck out.
   ],
   "helm-values": {},
-  "helmv3": {}
+  "helmv3": {},
+  "packageRules": [
+    {
+      "matchPackageNames": ["mkuf/klipper"],
+      "versioning": "git"
+    }
+  ]
 }
