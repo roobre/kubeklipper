@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base" // Everything that renovatebot supports by default
+    "config:base", // Everything that renovatebot supports by default
+    ":semanticCommitsDisabled" // Chore this, chore that, chore the heck out.
   ],
   "helm-values": {},
   "helmv3": {}
