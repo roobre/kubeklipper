@@ -1,0 +1,8 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base" // Everything that renovatebot supports by default
+  ],
+  "helm-values": {},
+  "helmv3": {}
+}
