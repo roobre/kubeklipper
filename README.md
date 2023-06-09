@@ -18,14 +18,14 @@ The kubeklipper chart is distributed as an [OCI image](https://helm.sh/docs/topi
 ```yaml
 dependencies:
   - name: kubeklipper
-    version: 0.0.2
-    repository: oci://ghcr.io/roobre
+    version: 0.1.0
+    repository: oci://ghcr.io/roobre/charts
 ```
 
 You can also install the chart directly:
 
 ```shell
-helm install kubeklipper oci://ghcr.io/roobre/kubeklipper --version 0.0.2
+helm install kubeklipper oci://ghcr.io/roobre/charts/kubeklipper --version 0.1.0
 ```
 
 ## Architecture
