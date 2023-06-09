@@ -20,8 +20,7 @@ klipper:
   image:
     repository: mkuf/klipper
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "b2178f4"
+    tag: "v0.11.0"
 
   securityContext:
     readOnlyRootFilesystem: true
@@ -41,7 +40,6 @@ moonraker:
   image:
     repository: mkuf/moonraker
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
     tag: "v0.8.0"
 
   securityContext:
