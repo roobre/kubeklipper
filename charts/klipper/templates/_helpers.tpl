@@ -70,6 +70,8 @@ Create the name of the service account to use
 {{- range $value }}
   {{ . | toString}}
 {{- end }}
+{{- else if $value | kindIs "bool" -}}
+{{- . | printf " %v" | title }}
 {{- else }}
 {{- . | printf " %v" }}
 {{- end }}
