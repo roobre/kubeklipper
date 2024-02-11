@@ -54,6 +54,9 @@ moonraker:
     # emptyDir: {}
 
   config:
+    file_manager:
+      check_klipper_config_path: false
+      enable_config_write_access: false
     server:
       host: 0.0.0.0
       port: 7125
