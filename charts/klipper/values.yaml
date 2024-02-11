@@ -40,7 +40,7 @@ moonraker:
   image:
     repository: mkuf/moonraker
     pullPolicy: IfNotPresent
-    tag: "v0.8.0"
+    tag: "67c98f6"
 
   securityContext:
     readOnlyRootFilesystem: true
