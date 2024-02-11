@@ -60,8 +60,8 @@ moonraker:
       klippy_uds_address: /run/klipper/klipper.sock
     machine:
       provider: none
-      validate_service: False
-      validate_config: False
+      validate_service: false
+      validate_config: false
     authorization:
       trusted_clients: 0.0.0.0/0
       cors_domains: "*"
