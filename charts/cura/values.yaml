@@ -1,0 +1,83 @@
+# Default values for cura.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: ghcr.io/linuxserver/cura
+  pullPolicy: IfNotPresent
+  tag: 5.6.0-ls11@sha256:a1edb8f70f80ab5627af8448a50a8a522a53850d506e716aa6fac57732dc6258
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+extraEnv: []
+# - name: FOO
+#   value: bar
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # hosts: []
+  #   - host: chart-example.local
+  #     paths:
+  #       - path: /
+  #         pathType: ImplementationSpecific
+  # tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+# You probably want change this to something that is not an emptyDir.
+# As of 5.6.0-ls11, the container does not appropriately set permissions for cura to be able to this directory. You will
+# need to manually chown the directories cura writes to:
+# chown -R 911 /config/.local/share/cura
+# chown -R 911 /config/.config/cura
+volumes:
+  - name: config
+    emptyDir: {}
+
+volumeMounts:
+  - name: config
+    mountPath: /config
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

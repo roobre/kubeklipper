@@ -28,3 +28,6 @@ dependencies:
   - name: ustreamer
     version: 0.1.0
     condition: ustreamer.enabled
+  - name: cura
+    version: 0.1.0
+    condition: cura.enabled
