@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "go2rtc.fullname" . }}
+  labels:
+    {{- include "go2rtc.labels" . | nindent 4 }}
+data:
+  go2rtc.yaml: |-
+    {{- .Values.config | toYaml | nindent 4 }}

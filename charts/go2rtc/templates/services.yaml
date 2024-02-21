@@ -1,0 +1,19 @@
+{{ $root := . }}
+{{ range $name, $svc := .Values.services }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "go2rtc.fullname" $root }}-{{ $name }}
+  labels:
+    {{- include "go2rtc.labels" $root | nindent 4 }}
+spec:
+  type: {{ $svc.type }}
+  ports:
+    - port: {{ $svc.port }}
+      targetPort: {{ $name }}
+      protocol: TCP
+      name: {{ $name }}
+  selector:
+    {{- include "go2rtc.selectorLabels" $root | nindent 4 }}
+---
+{{- end }}

@@ -76,3 +76,9 @@ ustreamer:
 cura:
   enabled: false
 
+go2rtc:
+  enabled: false
+  # See: https://github.com/AlexxIT/go2rtc/wiki/Configuration
+  # config:
+  #   streams:
+  #     webcam: "ffmpeg:device?video=/dev/video0&input_format=h264&video_size=1920x1080"
