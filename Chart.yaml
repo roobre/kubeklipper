@@ -31,3 +31,6 @@ dependencies:
   - name: cura
     version: 0.1.0
     condition: cura.enabled
+  - name: go2rtc
+    version: 0.1.0
+    condition: go2rtc.enabled
