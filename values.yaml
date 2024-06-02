@@ -76,6 +76,9 @@ ustreamer:
 cura:
   enabled: false
 
+orcaslicer:
+  enabled: false
+
 go2rtc:
   enabled: false
   # See: https://github.com/AlexxIT/go2rtc/wiki/Configuration
