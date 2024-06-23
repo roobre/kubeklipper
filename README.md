@@ -8,8 +8,9 @@ It includes:
 - [Mainsail](https://github.com/mainsail-crew/mainsail), a slick web UI for Klipper/Moonraker
 - And/or [Fluidd](https://github.com/fluidd-core/fluidd), anoter slick web UI for Klipper/Moonraker
 - [µStreamer](https://github.com/pikvm/ustreamer), a lightweight and fast MJPEG-HTTP streamer for your webcam
-- [https://github.com/AlexxIT/go2rtc/](go2rtc), a more complex and powerful video streaming solution, as an alternative to ustreamer.
+- [go2rtc](https://github.com/AlexxIT/go2rtc/), a more complex and powerful video streaming solution, as an alternative to ustreamer.
 - [Cura](https://ultimaker.com/software/ultimaker-cura/), an advanced slicer software.
+- [OrcaSlicer](https://github.com/SoftFever/OrcaSlicer), an slicer as an alternative to Cura.
 
 ## Using this chart
 
