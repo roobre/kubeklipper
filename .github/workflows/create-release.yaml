@@ -1,0 +1,66 @@
+name: Create release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  COMMITTER_NAME: "Release bot"
+  COMMITTER_EMAIL: bot@santalla.io
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Create release-toolkit data file and hydrate it.
+      - name: Generate changelog YAML
+        uses: newrelic/release-toolkit/generate-yaml@v1
+        with:
+          excluded-dirs: .github
+          excluded-files: README.md
+          exit-code: "0"
+      # Check if we have something to release and if the release is not blocked.
+      - name: Check if the release is empty
+        id: empty
+        uses: newrelic/release-toolkit/is-empty@v1
+      - name: Check if the release is held
+        id: held
+        uses: newrelic/release-toolkit/is-held@v1
+
+      # Calculate next-version and generate change logs
+      - name: Calculate next version
+        if: ${{ steps.empty.outputs.is-empty == 'false' && steps.held.outputs.is-held == 'false' }}
+        id: version
+        uses: newrelic/release-toolkit/next-version@v1
+      - name: Generate release notes
+        if: ${{ steps.empty.outputs.is-empty == 'false' && steps.held.outputs.is-held == 'false' }}
+        uses: newrelic/release-toolkit/render@v1
+      - name: Update CHANGELOG.md
+        if: ${{ steps.empty.outputs.is-empty == 'false' && steps.held.outputs.is-held == 'false' }}
+        uses: newrelic/release-toolkit/update-markdown@v1
+        with:
+          version: ${{ steps.version.outputs.next-version }}
+
+      # Commit to main branch and push changes. Then create a release.
+      - name: Commit and tag release
+        if: ${{ steps.empty.outputs.is-empty == 'false' && steps.held.outputs.is-held == 'false' }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          git config user.name '${{ env.COMMITTER_NAME }}'
+          git config user.email '${{ env.COMMITTER_EMAIL }}'
+          git add CHANGELOG.md
+          git commit -m "release: ${{ steps.version.outputs.next-version }}"
+          git push
+          gh release create "${{ steps.version.outputs.next-version }}" -F CHANGELOG.partial.md

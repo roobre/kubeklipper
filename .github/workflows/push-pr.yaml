@@ -1,0 +1,38 @@
+name: Lint and test PR
+
+on:
+  pull_request:
+
+jobs:
+  changelog-checks:
+    name: Test changelog correctness and get next-version
+    runs-on: ubuntu-latest
+    outputs:
+      is-empty: ${{ steps.empty.outputs.is-empty }}
+      is-held: ${{ steps.held.outputs.is-held }}
+      skip-release: ${{ steps.empty.outputs.is-empty == 'true' || steps.held.outputs.is-held == 'true' }}
+      next-version: ${{ steps.version.outputs.next-version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate that the markdown is correct
+        uses: newrelic/release-toolkit/validate-markdown@v1
+      - name: Generate YAML
+        uses: newrelic/release-toolkit/generate-yaml@v1
+        with:
+          excluded-dirs: .github
+          excluded-files: README.md
+          exit-code: "0"
+      - name: Check if the release is empty
+        id: empty
+        uses: newrelic/release-toolkit/is-empty@v1
+      - name: Check if the release is held
+        id: held
+        uses: newrelic/release-toolkit/is-held@v1
+      - name: Calculate next version
+        id: version
+        uses: newrelic/release-toolkit/next-version@v1
