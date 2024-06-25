@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/linuxserver/orcaslicer
-  tag: "v2.0.0-ls32"
+  tag: "2.1.0"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
