@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.12.4 - 2024-09-06
+
+### ⛓️ Dependencies
+- Updated mkuf/ustreamer to v6.14
+
 ## v0.12.3 - 2024-08-24
 
 ### ⛓️ Dependencies
