@@ -7,7 +7,7 @@ config: {}
 image:
   repository: alexxit/go2rtc
   pullPolicy: IfNotPresent
-  tag: "1.9.4"
+  tag: "1.9.6"
 
 imagePullSecrets: []
 nameOverride: ""
