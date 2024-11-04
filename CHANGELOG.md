@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.12.7 - 2024-11-04
+
+### ⛓️ Dependencies
+- Updated alexxit/go2rtc to v1.9.6
+
 ## v0.12.6 - 2024-09-30
 
 ### ⛓️ Dependencies
