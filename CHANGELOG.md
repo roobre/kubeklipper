@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.12.11 - 2024-12-04
+
+### ⛓️ Dependencies
+- Updated ghcr.io/mainsail-crew/mainsail to v2.13.0
+
 ## v0.12.10 - 2024-11-19
 
 ### ⛓️ Dependencies
